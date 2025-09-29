@@ -99,7 +99,7 @@ export default function Network() {
     <View style={styles.container}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#1A0B2E', '#2D1B69', '#4C1D95']}
+        colors={['#0F0715', '#1A0B2E', '#2D1B69']}
         style={styles.gradient}
       />
       
@@ -108,7 +108,7 @@ export default function Network() {
         <BlurView intensity={20} style={styles.headerBlur}>
           <View style={styles.headerContent}>
             <View style={styles.headerLeft}>
-              <Wifi size={28} color="#A855F7" />
+              <Wifi size={28} color="#7C3AED" />
               <View>
                 <Text style={styles.headerTitle}>Network</Text>
                 <Text style={styles.headerSubtitle}>Connection details</Text>
@@ -183,7 +183,7 @@ export default function Network() {
           <BlurView intensity={15} style={styles.cardBlur}>
             <View style={styles.speedTestContent}>
               <View style={styles.speedTestHeader}>
-                <Zap size={24} color="#A855F7" />
+                <Zap size={24} color="#7C3AED" />
                 <Text style={styles.speedTestTitle}>Speed Test</Text>
                 <Pressable 
                   onPress={runSpeedTest} 
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   headerContent: {
     flexDirection: 'row',
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   connectionContent: {
     padding: 20,
@@ -474,12 +474,12 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   speedTestButton: {
-    backgroundColor: 'rgba(139, 92, 246, 0.3)',
+    backgroundColor: 'rgba(124, 58, 237, 0.3)',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.5)',
+    borderColor: 'rgba(124, 58, 237, 0.5)',
   },
   speedTestButtonDisabled: {
     opacity: 0.5,
@@ -502,7 +502,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   speedResultLabel: {
     fontSize: 12,
@@ -528,7 +528,7 @@ const styles = StyleSheet.create({
   testingProgress: {
     height: '100%',
     width: '60%',
-    backgroundColor: '#A855F7',
+    backgroundColor: '#7C3AED',
     borderRadius: 2,
   },
   testingText: {

@@ -25,28 +25,35 @@ import { StatusBar } from 'expo-status-bar';
 const { width } = Dimensions.get('window');
 
 interface NetworkStats {
+  fourGUsage: string;
+  fiveGUsage: string;
+  wifiUsage: string;
   totalUsage: string;
-  dailyUsage: string;
-  monthlyLimit: string;
   downloadSpeed: string;
   uploadSpeed: string;
   signal: number;
-  networkType: '4G' | '5G' | 'WiFi';
+  currentNetwork: '4G' | '5G' | 'WiFi';
   activeApps: number;
+  dailyLimit: string;
+  monthlyUsed: string;
 }
 
 export default function Dashboard() {
   const [networkStats, setNetworkStats] = useState<NetworkStats>({
-    totalUsage: '2.4 GB',
-    dailyUsage: '156 MB',
-    monthlyLimit: '10 GB',
+    fourGUsage: '1.2 GB',
+    fiveGUsage: '890 MB',
+    wifiUsage: '3.1 GB',
+    totalUsage: '5.19 GB',
     downloadSpeed: '45.2 Mbps',
     uploadSpeed: '12.8 Mbps',
     signal: 85,
-    networkType: '5G',
+    currentNetwork: '5G',
     activeApps: 12,
+    dailyLimit: '500 MB',
+    monthlyUsed: '15.2 GB',
   });
 
+  const [selectedMode, setSelectedMode] = useState<'4G' | '5G' | 'WiFi' | 'All'>('All');
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -68,17 +75,26 @@ export default function Dashboard() {
 
   const getNetworkTypeColor = (type: string) => {
     switch (type) {
-      case '5G': return '#8B5CF6';
-      case '4G': return '#3B82F6';
+      case '5G': return '#7C3AED';
+      case '4G': return '#2563EB';
+      case 'WiFi': return '#059669';
       default: return '#6B7280';
     }
   };
 
+  const getModeData = () => {
+    switch (selectedMode) {
+      case '4G': return { usage: networkStats.fourGUsage, color: '#2563EB' };
+      case '5G': return { usage: networkStats.fiveGUsage, color: '#7C3AED' };
+      case 'WiFi': return { usage: networkStats.wifiUsage, color: '#059669' };
+      default: return { usage: networkStats.totalUsage, color: '#7C3AED' };
+    }
+  };
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#1A0B2E', '#2D1B69', '#4C1D95']}
+        colors={['#0F0715', '#1A0B2E', '#2D1B69']}
         style={styles.gradient}
       />
       
@@ -91,9 +107,34 @@ export default function Dashboard() {
               <Text style={styles.headerSubtitle}>Real-time tracking</Text>
             </View>
             <View style={styles.timeContainer}>
-              <Clock size={16} color="#A855F7" />
+              <Clock size={16} color="#7C3AED" />
               <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
             </View>
+          </View>
+        </BlurView>
+      </Animated.View>
+
+      {/* Mode Selector */}
+      <Animated.View entering={FadeInDown.delay(150)} style={styles.modeSelector}>
+        <BlurView intensity={15} style={styles.modeSelectorBlur}>
+          <View style={styles.modeSelectorContent}>
+            {(['All', '4G', '5G', 'WiFi'] as const).map((mode) => (
+              <Pressable
+                key={mode}
+                onPress={() => setSelectedMode(mode)}
+                style={[
+                  styles.modeButton,
+                  selectedMode === mode && styles.modeButtonActive
+                ]}
+              >
+                <Text style={[
+                  styles.modeButtonText,
+                  selectedMode === mode && styles.modeButtonTextActive
+                ]}>
+                  {mode}
+                </Text>
+              </Pressable>
+            ))}
           </View>
         </BlurView>
       </Animated.View>
@@ -109,7 +150,7 @@ export default function Dashboard() {
             <BlurView intensity={15} style={styles.cardBlur}>
               <View style={styles.cardContent}>
                 <View style={styles.cardHeader}>
-                  <Signal size={24} color="#A855F7" />
+                  <Signal size={24} color="#7C3AED" />
                   <Text style={styles.cardTitle}>Signal</Text>
                 </View>
                 <Text style={styles.cardValue}>{networkStats.signal}%</Text>
@@ -132,10 +173,10 @@ export default function Dashboard() {
             <BlurView intensity={15} style={styles.cardBlur}>
               <View style={styles.cardContent}>
                 <View style={styles.cardHeader}>
-                  <Zap size={24} color={getNetworkTypeColor(networkStats.networkType)} />
+                  <Zap size={24} color={getNetworkTypeColor(networkStats.currentNetwork)} />
                   <Text style={styles.cardTitle}>Network</Text>
                 </View>
-                <Text style={styles.cardValue}>{networkStats.networkType}</Text>
+                <Text style={styles.cardValue}>{networkStats.currentNetwork}</Text>
                 <Text style={styles.cardSubtext}>Ultra Fast</Text>
               </View>
             </BlurView>
@@ -165,34 +206,66 @@ export default function Dashboard() {
           </Animated.View>
         </View>
 
-        {/* Usage Summary */}
+        {/* Network Usage by Type */}
+        <Animated.View entering={FadeInDown.delay(550)} style={styles.networkUsageCard}>
+          <BlurView intensity={15} style={styles.cardBlur}>
+            <View style={styles.networkUsageContent}>
+              <Text style={styles.networkUsageTitle}>Data Usage by Network</Text>
+              <View style={styles.networkUsageGrid}>
+                <View style={styles.networkUsageItem}>
+                  <View style={[styles.networkUsageIcon, { backgroundColor: 'rgba(37, 99, 235, 0.2)' }]}>
+                    <Radio size={20} color="#2563EB" />
+                  </View>
+                  <Text style={styles.networkUsageLabel}>4G</Text>
+                  <Text style={styles.networkUsageValue}>{networkStats.fourGUsage}</Text>
+                </View>
+                <View style={styles.networkUsageItem}>
+                  <View style={[styles.networkUsageIcon, { backgroundColor: 'rgba(124, 58, 237, 0.2)' }]}>
+                    <Radio size={20} color="#7C3AED" />
+                  </View>
+                  <Text style={styles.networkUsageLabel}>5G</Text>
+                  <Text style={styles.networkUsageValue}>{networkStats.fiveGUsage}</Text>
+                </View>
+                <View style={styles.networkUsageItem}>
+                  <View style={[styles.networkUsageIcon, { backgroundColor: 'rgba(5, 150, 105, 0.2)' }]}>
+                    <Wifi size={20} color="#059669" />
+                  </View>
+                  <Text style={styles.networkUsageLabel}>WiFi</Text>
+                  <Text style={styles.networkUsageValue}>{networkStats.wifiUsage}</Text>
+                </View>
+              </View>
+            </View>
+          </BlurView>
+        </Animated.View>
+
+        {/* Current Mode Usage */}
         <Animated.View entering={FadeInDown.delay(600)} style={styles.usageCard}>
           <BlurView intensity={15} style={styles.cardBlur}>
             <View style={styles.usageContent}>
               <View style={styles.usageHeader}>
-                <TrendingUp size={24} color="#A855F7" />
-                <Text style={styles.usageTitle}>Data Usage</Text>
+                <TrendingUp size={24} color={getModeData().color} />
+                <Text style={styles.usageTitle}>{selectedMode} Usage</Text>
               </View>
               
               <View style={styles.usageStats}>
                 <View style={styles.usageStat}>
-                  <Text style={styles.usageLabel}>Today</Text>
-                  <Text style={styles.usageValue}>{networkStats.dailyUsage}</Text>
+                  <Text style={styles.usageLabel}>Current</Text>
+                  <Text style={styles.usageValue}>{getModeData().usage}</Text>
                 </View>
                 <View style={styles.usageStat}>
                   <Text style={styles.usageLabel}>Total</Text>
                   <Text style={styles.usageValue}>{networkStats.totalUsage}</Text>
                 </View>
                 <View style={styles.usageStat}>
-                  <Text style={styles.usageLabel}>Limit</Text>
-                  <Text style={styles.usageValue}>{networkStats.monthlyLimit}</Text>
+                  <Text style={styles.usageLabel}>Monthly</Text>
+                  <Text style={styles.usageValue}>{networkStats.monthlyUsed}</Text>
                 </View>
               </View>
 
               <View style={styles.progressBar}>
-                <View style={styles.progressFill} />
+                <View style={[styles.progressFill, { backgroundColor: getModeData().color }]} />
               </View>
-              <Text style={styles.progressText}>24% of monthly limit used</Text>
+              <Text style={styles.progressText}>68% of monthly data used</Text>
             </View>
           </BlurView>
         </Animated.View>
@@ -204,7 +277,7 @@ export default function Dashboard() {
               <Text style={styles.actionsTitle}>Quick Actions</Text>
               <View style={styles.actionButtons}>
                 <Pressable style={styles.actionButton}>
-                  <Smartphone size={20} color="#A855F7" />
+                  <Smartphone size={20} color="#7C3AED" />
                   <Text style={styles.actionText}>App Usage</Text>
                 </Pressable>
                 <Pressable style={styles.actionButton}>
@@ -241,7 +314,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   headerContent: {
     flexDirection: 'row',
@@ -266,8 +339,40 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 16,
-    color: '#A855F7',
+    color: '#7C3AED',
     fontWeight: '600',
+  },
+  modeSelector: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  modeSelectorBlur: {
+    borderRadius: 16,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(124, 58, 237, 0.3)',
+  },
+  modeSelectorContent: {
+    flexDirection: 'row',
+    padding: 4,
+  },
+  modeButton: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  modeButtonActive: {
+    backgroundColor: 'rgba(124, 58, 237, 0.3)',
+  },
+  modeButtonText: {
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontWeight: '600',
+  },
+  modeButtonTextActive: {
+    color: '#FFFFFF',
   },
   scrollView: {
     flex: 1,
@@ -288,7 +393,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   cardContent: {
     padding: 20,
@@ -343,6 +448,44 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
   },
+  networkUsageCard: {
+    marginBottom: 20,
+  },
+  networkUsageContent: {
+    padding: 20,
+  },
+  networkUsageTitle: {
+    fontSize: 18,
+    color: '#FFFFFF',
+    fontWeight: '600',
+    marginBottom: 16,
+  },
+  networkUsageGrid: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  networkUsageItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  networkUsageIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  networkUsageLabel: {
+    fontSize: 12,
+    color: 'rgba(255, 255, 255, 0.7)',
+    marginBottom: 4,
+  },
+  networkUsageValue: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontWeight: '700',
+  },
   usageCard: {
     marginBottom: 20,
   },
@@ -386,9 +529,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   progressFill: {
-    width: '24%',
+    width: '68%',
     height: '100%',
-    backgroundColor: '#A855F7',
     borderRadius: 3,
   },
   progressText: {
@@ -414,13 +556,13 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     flex: 1,
-    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+    backgroundColor: 'rgba(124, 58, 237, 0.2)',
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
     gap: 8,
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.3)',
+    borderColor: 'rgba(124, 58, 237, 0.4)',
   },
   actionText: {
     color: '#FFFFFF',

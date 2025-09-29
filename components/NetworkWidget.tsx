@@ -20,7 +20,7 @@ export default function NetworkWidget({
   return (
     <View style={styles.widget}>
       <LinearGradient
-        colors={['rgba(139, 92, 246, 0.8)', 'rgba(76, 29, 149, 0.9)']}
+        colors={['rgba(124, 58, 237, 0.9)', 'rgba(45, 27, 105, 0.95)']}
         style={styles.gradient}
       />
       <BlurView intensity={20} style={styles.blur}>
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.3)',
+    borderColor: 'rgba(124, 58, 237, 0.4)',
   },
   gradient: {
     position: 'absolute',
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   networkType: {
     fontSize: 8,
-    color: '#A855F7',
+    color: '#7C3AED',
     fontWeight: '700',
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     paddingHorizontal: 4,

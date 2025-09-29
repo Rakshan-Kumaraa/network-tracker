@@ -28,22 +28,24 @@ interface DataPoint {
   fourG: number;
   fiveG: number;
   wifi: number;
+  total: number;
 }
 
 const mockData: DataPoint[] = [
-  { day: 'Mon', fourG: 120, fiveG: 200, wifi: 450 },
-  { day: 'Tue', fourG: 180, fiveG: 280, wifi: 320 },
-  { day: 'Wed', fourG: 90, fiveG: 350, wifi: 280 },
-  { day: 'Thu', fourG: 160, fiveG: 180, wifi: 380 },
-  { day: 'Fri', fourG: 220, fiveG: 420, wifi: 150 },
-  { day: 'Sat', fourG: 300, fiveG: 180, wifi: 620 },
-  { day: 'Sun', fourG: 250, fiveG: 320, wifi: 580 },
+  { day: 'Mon', fourG: 120, fiveG: 200, wifi: 450, total: 770 },
+  { day: 'Tue', fourG: 180, fiveG: 280, wifi: 320, total: 780 },
+  { day: 'Wed', fourG: 90, fiveG: 350, wifi: 280, total: 720 },
+  { day: 'Thu', fourG: 160, fiveG: 180, wifi: 380, total: 720 },
+  { day: 'Fri', fourG: 220, fiveG: 420, wifi: 150, total: 790 },
+  { day: 'Sat', fourG: 300, fiveG: 180, wifi: 620, total: 1100 },
+  { day: 'Sun', fourG: 250, fiveG: 320, wifi: 580, total: 1150 },
 ];
 
 export default function Analytics() {
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('week');
+  const [selectedNetwork, setSelectedNetwork] = useState<'all' | '4G' | '5G' | 'WiFi'>('all');
 
-  const maxValue = Math.max(...mockData.map(d => d.fourG + d.fiveG + d.wifi));
+  const maxValue = Math.max(...mockData.map(d => d.total));
   
   const totalUsage = mockData.reduce((acc, curr) => ({
     fourG: acc.fourG + curr.fourG,
@@ -60,7 +62,7 @@ export default function Analytics() {
     <View style={styles.container}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#1A0B2E', '#2D1B69', '#4C1D95']}
+        colors={['#0F0715', '#1A0B2E', '#2D1B69']}
         style={styles.gradient}
       />
       
@@ -69,7 +71,7 @@ export default function Analytics() {
         <BlurView intensity={20} style={styles.headerBlur}>
           <View style={styles.headerContent}>
             <View style={styles.headerLeft}>
-              <BarChart3 size={28} color="#A855F7" />
+              <BarChart3 size={28} color="#7C3AED" />
               <View>
                 <Text style={styles.headerTitle}>Analytics</Text>
                 <Text style={styles.headerSubtitle}>Data usage insights</Text>
@@ -98,6 +100,31 @@ export default function Analytics() {
         </BlurView>
       </Animated.View>
 
+      {/* Network Filter */}
+      <Animated.View entering={FadeInUp.delay(150)} style={styles.networkFilter}>
+        <BlurView intensity={15} style={styles.filterBlur}>
+          <View style={styles.filterContent}>
+            {(['all', '4G', '5G', 'WiFi'] as const).map((network) => (
+              <Pressable
+                key={network}
+                onPress={() => setSelectedNetwork(network)}
+                style={[
+                  styles.filterButton,
+                  selectedNetwork === network && styles.filterButtonActive
+                ]}
+              >
+                <Text style={[
+                  styles.filterText,
+                  selectedNetwork === network && styles.filterTextActive
+                ]}>
+                  {network === 'all' ? 'All Networks' : network}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        </BlurView>
+      </Animated.View>
+
       <ScrollView 
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
@@ -108,7 +135,7 @@ export default function Analytics() {
           <Animated.View entering={FadeInDown.delay(200)} style={styles.summaryCard}>
             <BlurView intensity={15} style={styles.cardBlur}>
               <View style={styles.cardContent}>
-                <Radio size={20} color="#3B82F6" />
+                <Radio size={20} color="#2563EB" />
                 <Text style={styles.summaryLabel}>4G Usage</Text>
                 <Text style={styles.summaryValue}>{formatBytes(totalUsage.fourG)}</Text>
                 <View style={styles.trendContainer}>
@@ -122,7 +149,7 @@ export default function Analytics() {
           <Animated.View entering={FadeInDown.delay(300)} style={styles.summaryCard}>
             <BlurView intensity={15} style={styles.cardBlur}>
               <View style={styles.cardContent}>
-                <Radio size={20} color="#8B5CF6" />
+                <Radio size={20} color="#7C3AED" />
                 <Text style={styles.summaryLabel}>5G Usage</Text>
                 <Text style={styles.summaryValue}>{formatBytes(totalUsage.fiveG)}</Text>
                 <View style={styles.trendContainer}>
@@ -136,7 +163,7 @@ export default function Analytics() {
           <Animated.View entering={FadeInDown.delay(400)} style={styles.summaryCard}>
             <BlurView intensity={15} style={styles.cardBlur}>
               <View style={styles.cardContent}>
-                <Wifi size={20} color="#10B981" />
+                <Wifi size={20} color="#059669" />
                 <Text style={styles.summaryLabel}>WiFi Usage</Text>
                 <Text style={styles.summaryValue}>{formatBytes(totalUsage.wifi)}</Text>
                 <View style={styles.trendContainer}>
@@ -156,15 +183,15 @@ export default function Analytics() {
                 <Text style={styles.chartTitle}>Daily Usage Breakdown</Text>
                 <View style={styles.legend}>
                   <View style={styles.legendItem}>
-                    <View style={[styles.legendColor, { backgroundColor: '#3B82F6' }]} />
+                    <View style={[styles.legendColor, { backgroundColor: '#2563EB' }]} />
                     <Text style={styles.legendText}>4G</Text>
                   </View>
                   <View style={styles.legendItem}>
-                    <View style={[styles.legendColor, { backgroundColor: '#8B5CF6' }]} />
+                    <View style={[styles.legendColor, { backgroundColor: '#7C3AED' }]} />
                     <Text style={styles.legendText}>5G</Text>
                   </View>
                   <View style={styles.legendItem}>
-                    <View style={[styles.legendColor, { backgroundColor: '#10B981' }]} />
+                    <View style={[styles.legendColor, { backgroundColor: '#059669' }]} />
                     <Text style={styles.legendText}>WiFi</Text>
                   </View>
                 </View>
@@ -172,7 +199,7 @@ export default function Analytics() {
               
               <View style={styles.chart}>
                 {mockData.map((item, index) => {
-                  const total = item.fourG + item.fiveG + item.wifi;
+                  const total = item.total;
                   const height = (total / maxValue) * 120;
                   
                   return (
@@ -182,21 +209,21 @@ export default function Analytics() {
                           styles.chartSegment,
                           { 
                             height: `${(item.wifi / total) * 100}%`,
-                            backgroundColor: '#10B981'
+                            backgroundColor: '#059669'
                           }
                         ]} />
                         <View style={[
                           styles.chartSegment,
                           { 
                             height: `${(item.fiveG / total) * 100}%`,
-                            backgroundColor: '#8B5CF6'
+                            backgroundColor: '#7C3AED'
                           }
                         ]} />
                         <View style={[
                           styles.chartSegment,
                           { 
                             height: `${(item.fourG / total) * 100}%`,
-                            backgroundColor: '#3B82F6'
+                            backgroundColor: '#2563EB'
                           }
                         ]} />
                       </View>
@@ -246,7 +273,7 @@ export default function Analytics() {
                   <View style={styles.insightText}>
                     <Text style={styles.insightTitle}>WiFi Preference</Text>
                     <Text style={styles.insightDescription}>
-                      52% of your data usage is on WiFi
+                      58% of your data usage is on WiFi
                     </Text>
                   </View>
                 </View>
@@ -280,7 +307,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   headerContent: {
     flexDirection: 'row',
@@ -305,7 +332,7 @@ const styles = StyleSheet.create({
   },
   periodSelector: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+    backgroundColor: 'rgba(124, 58, 237, 0.15)',
     borderRadius: 12,
     padding: 4,
   },
@@ -315,7 +342,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   periodButtonActive: {
-    backgroundColor: 'rgba(139, 92, 246, 0.3)',
+    backgroundColor: 'rgba(124, 58, 237, 0.4)',
   },
   periodText: {
     fontSize: 12,
@@ -323,6 +350,38 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   periodTextActive: {
+    color: '#FFFFFF',
+  },
+  networkFilter: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  filterBlur: {
+    borderRadius: 16,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(124, 58, 237, 0.3)',
+  },
+  filterContent: {
+    flexDirection: 'row',
+    padding: 4,
+  },
+  filterButton: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  filterButtonActive: {
+    backgroundColor: 'rgba(124, 58, 237, 0.3)',
+  },
+  filterText: {
+    fontSize: 12,
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontWeight: '500',
+  },
+  filterTextActive: {
     color: '#FFFFFF',
   },
   scrollView: {
@@ -344,7 +403,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   cardContent: {
     padding: 16,
@@ -454,7 +513,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+    backgroundColor: 'rgba(124, 58, 237, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },

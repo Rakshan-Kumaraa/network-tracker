@@ -9,13 +9,13 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: 'rgba(26, 11, 46, 0.95)',
-          borderTopWidth: 1,
-          borderTopColor: 'rgba(139, 92, 246, 0.3)',
+          backgroundColor: 'rgba(15, 7, 21, 0.98)',
+          borderTopColor: 'rgba(109, 40, 217, 0.4)',
           height: 70,
           paddingBottom: 10,
           paddingTop: 10,
         },
-        tabBarActiveTintColor: '#A855F7',
+        tabBarActiveTintColor: '#7C3AED',
         tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.6)',
         tabBarLabelStyle: {
           fontSize: 12,

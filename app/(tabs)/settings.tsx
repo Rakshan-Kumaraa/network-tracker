@@ -208,7 +208,7 @@ export default function Settings() {
     <View style={styles.container}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#1A0B2E', '#2D1B69', '#4C1D95']}
+        colors={['#0F0715', '#1A0B2E', '#2D1B69']}
         style={styles.gradient}
       />
       
@@ -217,7 +217,7 @@ export default function Settings() {
         <BlurView intensity={20} style={styles.headerBlur}>
           <View style={styles.headerContent}>
             <View style={styles.headerLeft}>
-              <SettingsIcon size={28} color="#A855F7" />
+              <SettingsIcon size={28} color="#7C3AED" />
               <View>
                 <Text style={styles.headerTitle}>Settings</Text>
                 <Text style={styles.headerSubtitle}>Customize your experience</Text>
@@ -267,7 +267,7 @@ export default function Settings() {
                         <Switch
                           value={item.value}
                           onValueChange={item.onToggle}
-                          trackColor={{ false: 'rgba(255, 255, 255, 0.2)', true: '#A855F7' }}
+                          trackColor={{ false: 'rgba(255, 255, 255, 0.2)', true: '#7C3AED' }}
                           thumbColor={item.value ? '#FFFFFF' : '#FFFFFF'}
                         />
                       )}
@@ -293,7 +293,7 @@ export default function Settings() {
                 <Text style={styles.appName}>Network Monitor</Text>
                 <Text style={styles.appVersion}>Version 1.0.0</Text>
                 <Text style={styles.appDescription}>
-                  Advanced network tracking and data usage monitoring
+                  Advanced network tracking with 4G/5G/WiFi monitoring
                 </Text>
               </View>
             </View>
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   headerContent: {
     flexDirection: 'row',
@@ -369,10 +369,10 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   sectionContent: {
-    backgroundColor: 'rgba(139, 92, 246, 0.05)',
+    backgroundColor: 'rgba(124, 58, 237, 0.08)',
   },
   settingItem: {
     flexDirection: 'row',
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
   },
   settingItemBorder: {
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(139, 92, 246, 0.1)',
+    borderBottomColor: 'rgba(124, 58, 237, 0.15)',
   },
   settingLeft: {
     flexDirection: 'row',
@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   appInfoContent: {
     flexDirection: 'row',
@@ -432,11 +432,11 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 16,
-    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+    backgroundColor: 'rgba(124, 58, 237, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.3)',
+    borderColor: 'rgba(124, 58, 237, 0.4)',
   },
   appLogoText: {
     fontSize: 28,

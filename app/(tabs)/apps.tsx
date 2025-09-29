@@ -121,7 +121,7 @@ export default function Apps() {
     <View style={styles.container}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#1A0B2E', '#2D1B69', '#4C1D95']}
+        colors={['#0F0715', '#1A0B2E', '#2D1B69']}
         style={styles.gradient}
       />
       
@@ -130,14 +130,14 @@ export default function Apps() {
         <BlurView intensity={20} style={styles.headerBlur}>
           <View style={styles.headerContent}>
             <View style={styles.headerLeft}>
-              <Smartphone size={28} color="#A855F7" />
+              <Smartphone size={28} color="#7C3AED" />
               <View>
                 <Text style={styles.headerTitle}>App Usage</Text>
                 <Text style={styles.headerSubtitle}>Monitor data consumption</Text>
               </View>
             </View>
             <Pressable style={styles.filterButton}>
-              <Filter size={20} color="#A855F7" />
+              <Filter size={20} color="#7C3AED" />
             </Pressable>
           </View>
         </BlurView>
@@ -196,7 +196,7 @@ export default function Apps() {
           <Animated.View entering={FadeInLeft.delay(400)} style={styles.statCard}>
             <BlurView intensity={15} style={styles.cardBlur}>
               <View style={styles.statContent}>
-                <BarChart2 size={20} color="#A855F7" />
+                <BarChart2 size={20} color="#7C3AED" />
                 <Text style={styles.statLabel}>Total Apps</Text>
                 <Text style={styles.statValue}>{filteredApps.length}</Text>
               </View>
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   headerContent: {
     flexDirection: 'row',
@@ -343,11 +343,11 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+    backgroundColor: 'rgba(124, 58, 237, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.3)',
+    borderColor: 'rgba(124, 58, 237, 0.4)',
   },
   scrollView: {
     flex: 1,
@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   searchContent: {
     flexDirection: 'row',
@@ -388,13 +388,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
-    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+    backgroundColor: 'rgba(124, 58, 237, 0.15)',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   categoryButtonActive: {
-    backgroundColor: 'rgba(139, 92, 246, 0.3)',
-    borderColor: 'rgba(139, 92, 246, 0.5)',
+    backgroundColor: 'rgba(124, 58, 237, 0.3)',
+    borderColor: 'rgba(124, 58, 237, 0.5)',
   },
   categoryText: {
     fontSize: 14,
@@ -416,7 +416,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
+    borderColor: 'rgba(124, 58, 237, 0.3)',
   },
   statContent: {
     padding: 16,
@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 12,
-    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+    backgroundColor: 'rgba(124, 58, 237, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },
